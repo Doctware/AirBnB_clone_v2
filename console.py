@@ -138,7 +138,19 @@ class HBNBCommand(cmd.Cmd):
             value = value[1:-1].replace('_', ' ').replace('\\"', '"')
         # handule float
         elif '.' in value:
-            try: 
+            try:
+                value = float(value)
+            except ValueError:
+                continue
+        # handule int value
+        else:
+            try:
+                value = int(value)
+            except ValueError:
+                continue
+
+            setattr(new_instance, key, value)
+
         storage.save()
         print(new_instance.id)
         storage.save()
@@ -228,8 +240,7 @@ class HBNBCommand(cmd.Cmd):
                     print_list.append(str(v))
         else:
             for k, v in storage._FileStorage__objects.items():
-        """ """
-        print("Usage: count <class_name>")
+                print("Usage: count <class_name>")
 
     def do_update(self, args):
         """ Updates a certain object with new info """
@@ -319,23 +330,6 @@ class HBNBCommand(cmd.Cmd):
         print("Updates an object with new information")
         print("Usage: update <className> <id> <attName> <attVal>\n")
 
-if __name__ == "__main__":
-    HBNBCommand().cmdloop()
-#!/usr/bin/python3
-""" Console Module """
-import cmd
-import sys
-from models.base_model import BaseModel
-from models.__init__ import storage
-from models.user import User
-from models.place import Place
-from models.state import State
-from models.city import City
-from models.amenity import Amenity
-from models.review import Review
-        """ Help information for the update class """
-        print("Updates an object with new information")
-        print("Usage: update <className> <id> <attName> <attVal>\n")
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()
