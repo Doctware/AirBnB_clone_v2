@@ -118,10 +118,27 @@ class HBNBCommand(cmd.Cmd):
         if not args:
             print("** class name missing **")
             return
+
+        args = args.split()
+        class_name = args[0]
+
         elif args not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
+
         new_instance = HBNBCommand.classes[args]()
+
+        for param = args[1:]:
+            if '=' not in param:
+                continue
+            key, value = param.split('=', 1)
+
+        # handule string value
+        if value.statrwith('"') and value.endwith('"'):
+            value = value[1:-1].replace('_', ' ').replace('\\"', '"')
+        # handule float
+        elif '.' in value:
+            try: 
         storage.save()
         print(new_instance.id)
         storage.save()
@@ -129,7 +146,7 @@ class HBNBCommand(cmd.Cmd):
     def help_create(self):
         """ Help information for the create method """
         print("Creates a class of any type")
-        print("[Usage]: create <className>\n")
+        print("[Usage]: create <className> <param1>... <param_n>\n")
 
     def do_show(self, args):
         """ Method to show an individual object """
@@ -211,24 +228,6 @@ class HBNBCommand(cmd.Cmd):
                     print_list.append(str(v))
         else:
             for k, v in storage._FileStorage__objects.items():
-                print_list.append(str(v))
-
-        print(print_list)
-
-    def help_all(self):
-        """ Help information for the all command """
-        print("Shows all objects, or all of a class")
-        print("[Usage]: all <className>\n")
-
-    def do_count(self, args):
-        """Count current number of class instances"""
-        count = 0
-        for k, v in storage._FileStorage__objects.items():
-            if args == k.split('.')[0]:
-                count += 1
-        print(count)
-
-    def help_count(self):
         """ """
         print("Usage: count <class_name>")
 
@@ -316,6 +315,24 @@ class HBNBCommand(cmd.Cmd):
         new_dict.save()  # save updates to file
 
     def help_update(self):
+        """ Help information for the update class """
+        print("Updates an object with new information")
+        print("Usage: update <className> <id> <attName> <attVal>\n")
+
+if __name__ == "__main__":
+    HBNBCommand().cmdloop()
+#!/usr/bin/python3
+""" Console Module """
+import cmd
+import sys
+from models.base_model import BaseModel
+from models.__init__ import storage
+from models.user import User
+from models.place import Place
+from models.state import State
+from models.city import City
+from models.amenity import Amenity
+from models.review import Review
         """ Help information for the update class """
         print("Updates an object with new information")
         print("Usage: update <className> <id> <attName> <attVal>\n")
