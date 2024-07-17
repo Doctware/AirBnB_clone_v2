@@ -11,12 +11,12 @@ def do_pack():
     local("mkdir versions")
 
     gnrtd_time = datetime.now().strftime("%Y%m%d%H%M%S")
-    archive_n = f"web_static_{gnrtd_time}.tgz"
-    archive_p = f"versions/{archive_n}"
+    archive_n = "web_static_{}.tgz".format(gnrtd_time)
+    archive_p = "versions/{}".format(archive_n)
 
-    create = local(f"tar -czvf {archive_p} web_static")
+    create = local("tar -czvf {} web_static".format(archive_p))
 
-    if create.succeeded:
+    if create is not None:
         return archive_p
     else:
         return None
