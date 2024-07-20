@@ -3,14 +3,14 @@
 from models.base_model import BaseModel, Base
 from sqlalchemy import Column, String
 from sqlalchemy.orm import relationship
-from model.city import City
-import models import storage
+from models.city import City
+import models
 
 
 class State(BaseModel):
     """ State class """
     __tablename__ = 'states'
-    name = Colum(String(128), nullable=False)
+    name = Column(String(128), nullable=False)
     cities = relationship("City", backref="state")
 
     def __init__(self, *args, **kwargs):
@@ -27,7 +27,7 @@ class State(BaseModel):
         """
 
         city_list = []
-        for city for city in storage.all(City).values():
+        for city in models.storage.all(City).values():
             if city.state_id == self.id:
                 city_list.append(city)
         return city_list
