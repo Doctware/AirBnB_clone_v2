@@ -4,6 +4,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, scoped_session
 from models.base_model import BaseModel, Base
 import os
+import models
 
 from models.base_model import Base
 from models.user import User
@@ -39,19 +40,11 @@ class DBStorage:
 
     def all(self, cls=None):
         """ Query on the current session self.__session """
-        if cls is None:
-            objs = {}
-            for class_name, class_type in storage.classes.items():
-                for obj in self.__session.quary(class_type).all():
-                    key = f"{class_name}.{obj.id}"
-                    objs[key] = obj
-            return objs
+        if cls:
+            objs = self.__session.query(cls).all()
         else:
-            objs = {}
-            for obj in self.__session.quary(cls).all():
-                key = f"{cls.__name__}.{obj.id}"
-                objs[key] = obj
-            return objs
+            objs = self.__session.query(State, City).all()
+        return {f"{type(obj).__name__}.{obj.id}": obj for obj in objs}
 
     def new(self, obj):
         """ method thats adds objects to the current database sessions """
