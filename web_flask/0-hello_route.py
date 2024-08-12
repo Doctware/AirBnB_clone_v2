@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-""" this module statr a web Application """
+""" this module start a web Application """
 from flask import Flask
 
 
@@ -7,7 +7,7 @@ app = Flask(__name__)
 
 
 @app.route('/', strict_slashes=False)
-def hello_world():
+def hello_hbnb():
     """ this method say!!! HBNB! """
     return "Hello HBNB!"
 
