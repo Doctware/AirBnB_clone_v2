@@ -68,3 +68,7 @@ class DBStorage:
         session_factory =\
             sessionmaker(bind=self.__engine, expire_on_cimmit=False)
         self.__engine = scoped_session(session_factory)
+
+    def close(self):
+        """ this method diserialized obj to json """
+        self.__session.remove()
